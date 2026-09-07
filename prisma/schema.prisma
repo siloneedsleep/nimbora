@@ -1,1 +1,178 @@
+generator client {
+  provider = "prisma-client-js"
+}
 
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String   @id @default(cuid())
+  username      String   @unique
+  password      String
+  role          Role     @default(MEMBER)
+  isVerified    Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  profile       Profile?
+  blogs         Blog[]
+  comments      Comment[]
+  reactions     Reaction[]
+  apiKeys       APIKey[]
+  projects      Project[]
+  files         File[]
+  chatMembers   ChatMember[]
+  messages      Message[]
+  notifications Notification[]
+  ownedGroups   Group[]  @relation("GroupOwner")
+  agentTasks    AgentTask[]
+}
+
+model Profile {
+  id       String @id @default(cuid())
+  userId   String @unique
+  user     User   @relation(fields: [userId], references: [id])
+  bio      String?
+  avatar   String?
+  location String?
+  website  String?
+}
+
+model APIKey {
+  id           String   @id @default(cuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id])
+  provider     String
+  key          String
+  maskKey      String
+  defaultModel String?
+  balance      Float?
+  status       String   @default("active")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Project {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  name        String
+  description String?
+  isPublic    Boolean  @default(false)
+  files       File[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model File {
+  id        String   @id @default(cuid())
+  name      String
+  path      String
+  content   String?
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id])
+  projectId String?
+  project   Project? @relation(fields: [projectId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Blog {
+  id        String     @id @default(cuid())
+  userId    String
+  user      User       @relation(fields: [userId], references: [id])
+  title     String
+  content   String
+  category  String?
+  tags      String?
+  isPublic  Boolean    @default(true)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  comments  Comment[]
+  reactions Reaction[]
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  blogId    String
+  blog      Blog     @relation(fields: [blogId], references: [id])
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  content   String
+  createdAt DateTime @default(now())
+}
+
+model Reaction {
+  id        String   @id @default(cuid())
+  blogId    String
+  blog      Blog     @relation(fields: [blogId], references: [id])
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  emoji     String
+  createdAt DateTime @default(now())
+}
+
+model ChatMember {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  groupId   String?
+  group     Group?   @relation(fields: [groupId], references: [id])
+  createdAt DateTime @default(now())
+}
+
+model Group {
+  id        String       @id @default(cuid())
+  name      String
+  ownerId   String
+  owner     User         @relation("GroupOwner", fields: [ownerId], references: [id])
+  members   ChatMember[]
+  messages  Message[]
+  createdAt DateTime     @default(now())
+}
+
+model Message {
+  id         String   @id @default(cuid())
+  senderId   String
+  sender     User     @relation(fields: [senderId], references: [id])
+  receiverId String?
+  groupId    String?
+  group      Group?   @relation(fields: [groupId], references: [id])
+  content    String
+  type       String   @default("text")
+  metadata   String?
+  read       Boolean  @default(false)
+  createdAt  DateTime @default(now())
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  type      String
+  title     String
+  content   String
+  read      Boolean  @default(false)
+  data      String?
+  createdAt DateTime @default(now())
+}
+
+model AgentTask {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  name      String
+  status    String   @default("pending")
+  steps     String?
+  result    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum Role {
+  OWNER
+  OFFICIAL
+  VERIFIED
+  MEMBER
+}

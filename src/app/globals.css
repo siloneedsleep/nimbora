@@ -1,1 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
+:root {
+  --gradient: linear-gradient(135deg, #7DD3FC, #C4B5FD, #F9A8D4);
+}
+
+body {
+  margin: 0;
+  line-height: 1.6;
+}
+
+.font-display {
+  font-family: var(--font-space-grotesk), sans-serif;
+}
+
+.gradient-text {
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.glass {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+}

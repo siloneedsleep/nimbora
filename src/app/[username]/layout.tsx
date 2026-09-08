@@ -3,7 +3,7 @@
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { Home, Code2, Brain, FolderGit2, Newspaper, MessageCircle, Bell, Settings, Zap, LogOut, Plus, X, FilePlus, PenSquare, Bot } from "lucide-react";
+import { Home, Code2, Brain, FolderGit2, Newspaper, MessageCircle, Bell, Settings, Zap, LogOut, Plus, X, FilePlus, PenSquare, Bot, BookOpen, Activity } from "lucide-react";
 
 export default function WorkspaceLayout({
   children,
@@ -49,6 +49,8 @@ export default function WorkspaceLayout({
     { href: `/${username}/blog`, icon: Newspaper, label: "Blog" },
     { href: `/${username}/chat`, icon: MessageCircle, label: "Chat" },
     { href: `/${username}/automation`, icon: Zap, label: "Automation" },
+    { href: `/${username}/knowledge`, icon: BookOpen, label: "Knowledge" },
+    { href: `/${username}/activity`, icon: Activity, label: "Activity" },
   ];
 
   const quickActions = [
@@ -176,7 +178,7 @@ export default function WorkspaceLayout({
                   className="flex flex-col items-center gap-2 p-4 rounded-2xl bg-white/5 hover:bg-white/10 transition"
                 >
                   <action.icon size={24} className="text-sky-300" />
-                  <span className="text-xs text-gray-300 text-center">{action.label}</span>
+                  <span className="text-xs text-center">{action.label}</span>
                 </Link>
               ))}
             </div>

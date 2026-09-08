@@ -5,7 +5,7 @@ export default function Home() {
     <div className="relative min-h-screen overflow-x-hidden">
       {/* Nền động */}
       <div className="fixed inset-0 z-[-3] bg-[#0a0e1a]">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_20%_50%,#1e293b_0%,transparent_50%),radial-gradient(ellipse_at_80%_20%,#1e1b4b_0%,transparent_50%),radial-gradient(ellipse_at_50%_80%,#0f172a_0%,transparent_50%)]"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_20%_50%,#1e293b_0%,transparent_50%),radial-gradient(ellipse_at_80%_20%,#1e1b4b_0%,transparent_50%),radial-gradient(ellipse_at_80%_80%,#1e3a8a_0%,transparent_50%)]"></div>
       </div>
 
       {/* Navbar */}
@@ -13,12 +13,13 @@ export default function Home() {
         <Link href="/" className="flex items-center gap-2 font-display font-semibold text-xl">
           <span>☁️</span> Nimbora
         </Link>
-        <div className="flex items-center gap-6">
-          <a href="#features" className="text-gray-400 hover:text-white transition">Features</a>
-          <a href="#blog" className="text-gray-400 hover:text-white transition">Blog</a>
-          <a href="#projects" className="text-gray-400 hover:text-white transition">Projects</a>
-          <Link href="/signup" className="px-4 py-2 rounded-full border border-white/20 text-gray-200 hover:bg-white/5 transition">Sign Up</Link>
-          <Link href="/login" className="px-4 py-2 rounded-full border border-white/20 text-gray-200 hover:bg-white/5 transition">Login</Link>
+        <div className="flex items-center gap-3 md:gap-6">
+          {/* Ẩn links trên mobile */}
+          <a href="#features" className="hidden md:block text-gray-400 hover:text-white transition">Features</a>
+          <a href="#blog" className="hidden md:block text-gray-400 hover:text-white transition">Blog</a>
+          <a href="#projects" className="hidden md:block text-gray-400 hover:text-white transition">Projects</a>
+          <Link href="/signup" className="px-3 md:px-4 py-2 rounded-full border border-white/20 text-gray-200 hover:bg-white/5 transition text-sm">Sign Up</Link>
+          <Link href="/login" className="px-3 md:px-4 py-2 rounded-full border border-white/20 text-gray-200 hover:bg-white/5 transition text-sm">Login</Link>
         </div>
       </nav>
 
@@ -33,7 +34,7 @@ export default function Home() {
         </h1>
         <p className="text-gray-400 text-lg md:text-xl mb-10">The cloud that thinks with you.</p>
         <div className="flex gap-4">
-          <Link href="/login" className="px-8 py-3 rounded-full bg-gradient-to-r from-sky-300 via-purple-300 to-pink-200 text-[#0a0e1a] font-semibold shadow-lg shadow-sky-500/30 hover:shadow-purple-500/50 transition">Login</Link>
+          <Link href="/login" className="px-8 py-3 rounded-full bg-gradient-to-r from-sky-300 via-purple-300 to-pink-200 text-[#0a0e1a] font-semibold shadow-lg shadow-sky-500/30 hover:shadow-purple-500/30 transition">Get Started</Link>
           <Link href="/signup" className="px-8 py-3 rounded-full border border-white/15 text-gray-200 hover:bg-white/5 transition">Sign Up</Link>
         </div>
       </section>

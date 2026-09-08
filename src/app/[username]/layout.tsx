@@ -3,7 +3,7 @@
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { Home, Code2, Brain, FolderGit2, Newspaper, MessageCircle, Bell, Settings, Zap, LogOut, User } from "lucide-react";
+import { Home, Code2, Brain, FolderGit2, Newspaper, MessageCircle, Bell, Settings, Zap, LogOut } from "lucide-react";
 
 export default function WorkspaceLayout({
   children,
@@ -13,14 +13,23 @@ export default function WorkspaceLayout({
   const params = useParams();
   const username = params?.username as string;
   const router = useRouter();
-  const [darkMode, setDarkMode] = useState(true);
-  const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
   const [notificationCount, setNotificationCount] = useState(0);
 
   useEffect(() => {
-    // Fake notification count
-    setNotificationCount(3);
+    fetchNotificationCount();
   }, []);
+
+  const fetchNotificationCount = async () => {
+    try {
+      const res = await fetch("/api/notifications");
+      const data = await res.json();
+      if (res.ok) {
+        setNotificationCount(data.unreadCount || 0);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   const handleLogout = async () => {
     await fetch("/api/auth/logout", { method: "POST" });
@@ -59,14 +68,7 @@ export default function WorkspaceLayout({
             </Link>
           ))}
         </nav>
-        <div className="p-4 border-t border-white/5 space-y-2">
-          <button
-            onClick={() => setCommandPaletteOpen(true)}
-            className="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-400 hover:text-white hover:bg-white/5 transition w-full"
-          >
-            <span className="text-sm">⌘K</span>
-            <span>Command Palette</span>
-          </button>
+        <div className="p-4 border-t border-white/5">
           <button
             onClick={handleLogout}
             className="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-400 hover:text-white hover:bg-white/5 transition w-full"
@@ -80,13 +82,12 @@ export default function WorkspaceLayout({
       {/* Topbar */}
       <div className="md:ml-64">
         <header className="sticky top-0 z-30 flex items-center justify-between px-6 py-4 backdrop-blur-xl bg-[#0a0e1a]/50 border-b border-white/5">
-          <button
-            onClick={() => setCommandPaletteOpen(true)}
-            className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-gray-400 hover:text-white transition"
-          >
-            <span className="text-sm">⌘K</span>
-            <span className="text-sm hidden sm:inline">Tìm kiếm nhanh...</span>
-          </button>
+          <Link href={`/${username}`} className="md:hidden font-display font-semibold text-lg">
+            ☁️ Nimbora
+          </Link>
+          <div className="hidden md:block text-sm text-gray-400">
+            Workspace của @{username}
+          </div>
           <div className="flex items-center gap-4">
             <Link href={`/${username}/notifications`} className="relative">
               <Bell size={20} className="text-gray-400 hover:text-white transition" />
@@ -104,7 +105,6 @@ export default function WorkspaceLayout({
           </div>
         </header>
 
-        {/* Main content */}
         <main className="p-6">{children}</main>
       </div>
 
@@ -121,39 +121,6 @@ export default function WorkspaceLayout({
           </Link>
         ))}
       </nav>
-
-      {/* Command Palette Overlay */}
-      {commandPaletteOpen && (
-        <div
-          className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-start justify-center pt-24"
-          onClick={() => setCommandPaletteOpen(false)}
-        >
-          <div
-            className="glass rounded-2xl p-4 w-full max-w-lg"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <input
-              type="text"
-              placeholder="Tìm kiếm..."
-              className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-sky-300/50 outline-none text-white mb-4"
-              autoFocus
-            />
-            <div className="space-y-2">
-              {navItems.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setCommandPaletteOpen(false)}
-                  className="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-400 hover:text-white hover:bg-white/5 transition"
-                >
-                  <item.icon size={18} />
-                  <span>{item.label}</span>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

@@ -1,4 +1,4 @@
-# Nimbora
+# Nimbora - Professinal AI Workspace
 
 > An AI-native personal workspace that combines a code editor, project management, AI lab, blog, real-time chat, and automation — designed for a deeply integrated AI experience.
 
@@ -193,7 +193,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ### Security
 
-If you discover a security vulnerability, please email security@nimbora.dev instead of using the issue tracker (if applicable).
+If you discover a security vulnerability, please email nimborasupport@gmail.com instead of using the issue tracker (if applicable).
 
 ## 📖 Additional Resources
 
@@ -207,4 +207,4 @@ Thanks to all our contributors and the open-source community for making Nimbora 
 
 ---
 
-**Made with ❤️ by the Nimbora team**
+**Made with ❤️ by Silo (@siloneedsleep)**

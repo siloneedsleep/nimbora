@@ -31,7 +31,7 @@ Examples of unacceptable behavior by participants include:
 
 Instances of abusive, harassing, or otherwise unacceptable behavior may be reported by contacting the project maintainers at:
 
-- **Email:** conduct@nimbora.dev
+- **Email:** nimborasupport@gmail.com
 - **GitHub Issues:** Use private report feature
 - **Direct Message:** Contact maintainers on GitHub
 

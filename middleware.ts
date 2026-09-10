@@ -5,15 +5,22 @@ import { getCurrentUser } from "@/lib/auth";
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   
-  if (pathname.startsWith("/api/")) {
+  // Public routes
+  if (
+    pathname === "/" ||
+    pathname === "/login" ||
+    pathname === "/signup" ||
+    pathname === "/cronjob" ||
+    pathname.startsWith("/blog") ||
+    pathname.startsWith("/api/")
+  ) {
     return NextResponse.next();
   }
 
-  if (pathname !== "/" && pathname !== "/login" && pathname !== "/signup" && pathname !== "/cronjob") {
-    const user = getCurrentUser(request);
-    if (!user) {
-      return NextResponse.redirect(new URL("/login", request.url));
-    }
+  // Các route khác cần login
+  const user = getCurrentUser(request);
+  if (!user) {
+    return NextResponse.redirect(new URL("/login", request.url));
   }
   
   return NextResponse.next();

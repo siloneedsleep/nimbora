@@ -159,7 +159,7 @@ export default function Home() {
         <div className="flex justify-center gap-6 mb-4 flex-wrap text-sm">
           <a href="#features" className="text-gray-400 hover:text-white transition">Features</a>
           <a href="#blog" className="text-gray-400 hover:text-white transition">Blog</a>
-          <a href="/login" className="text-gray-400 hover:text-white transition">Login</Link>
+          <Link href="/login" className="text-gray-400 hover:text-white transition">Login</Link>
           <a href="/signup" className="text-gray-400 hover:text-white transition">Sign Up</a>
         </div>
         <p className="text-gray-500 text-sm">© 2025 Nimbora. The cloud that thinks with you.</p>

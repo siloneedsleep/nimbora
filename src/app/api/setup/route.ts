@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/db";
-import { hashPassword } from "@/lib/auth";
+import { prisma } from "../../../../lib/db";
+import { hashPassword } from "../../../../lib/auth";
 
 export async function GET() {
   try {
-    const user1 = await prisma.user.upsert({
+    await prisma.user.upsert({
       where: { username: "siloneedsleep" },
       update: { role: "OWNER" },
       create: {
@@ -14,7 +14,7 @@ export async function GET() {
       },
     });
 
-    const user2 = await prisma.user.upsert({
+    await prisma.user.upsert({
       where: { username: "mioo" },
       update: { role: "OFFICIAL" },
       create: {
@@ -27,6 +27,6 @@ export async function GET() {
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error(error);
-    return NextResponse.json({ error: "Lỗi server" }, { status: 500 });
+    return NextResponse.json({ error: String(error) }, { status: 500 });
   }
 }

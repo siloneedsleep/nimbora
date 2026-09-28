@@ -68,7 +68,7 @@ npm run format
 
 ## 🛠️ Development
 
-This project is built with **TypeScript** (98.4%) for type safety and reliability.
+This project is built with **TypeScript** for type safety and reliability.
 
 ### Project Structure
 

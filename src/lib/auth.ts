@@ -2,15 +2,14 @@ import { NextRequest } from "next/server";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
-const JWT_SECRET = process.env.JWT_SECRET;
-
-if (!JWT_SECRET) {
-  // Không fallback về secret cứng — nếu thiếu env, token ký ra sẽ không an
-  // toàn (ai biết default cũ cũng forge được). Fail fast thay vì âm thầm
-  // chạy với secret công khai trong source code.
-  throw new Error(
-    "JWT_SECRET chưa được set. Thêm biến môi trường JWT_SECRET (vd: openssl rand -hex 32) trước khi chạy app."
-  );
+function getJwtSecret(): string {
+  const secret = process.env.JWT_SECRET;
+  if (!secret) {
+    throw new Error(
+      "JWT_SECRET chưa được set. Thêm biến môi trường JWT_SECRET (vd: openssl rand -hex 32) trước khi chạy app."
+    );
+  }
+  return secret;
 }
 
 export async function hashPassword(password: string): Promise<string> {
@@ -22,12 +21,12 @@ export async function verifyPassword(password: string, hashed: string): Promise<
 }
 
 export function generateToken(userId: string, username: string): string {
-  return jwt.sign({ userId, username }, JWT_SECRET, { expiresIn: "7d" });
+  return jwt.sign({ userId, username }, getJwtSecret(), { expiresIn: "7d" });
 }
 
 export function verifyToken(token: string): any {
   try {
-    return jwt.verify(token, JWT_SECRET);
+    return jwt.verify(token, getJwtSecret());
   } catch (error) {
     return null;
   }

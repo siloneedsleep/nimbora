@@ -34,7 +34,7 @@ export default function Navbar() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
         <Link href="/" className="flex items-center gap-2 font-display font-semibold text-xl text-white">
-  <img src="/logo.png" alt="Nimbora" className="w-8 h-8" />
+  <img src="/logo.png" alt="Nimbora" width={32} height={32} className="size-8" />
   Nimbora
 </Link>
 

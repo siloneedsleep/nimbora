@@ -1,31 +1,25 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { getCurrentUser } from "@/lib/auth";
+import { verifySession } from "@/lib/session";
 
-export function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl;
-  
-  // Public routes
-  if (
-    pathname === "/" ||
-    pathname === "/login" ||
-    pathname === "/signup" ||
-    pathname === "/cronjob" ||
-    pathname.startsWith("/blog") ||
-    pathname.startsWith("/api/")
-  ) {
-    return NextResponse.next();
-  }
+export async function middleware(request: NextRequest) {
+  const { pathname, search } = request.nextUrl;
+  const isPublic = pathname === "/" || pathname === "/login" || pathname === "/signup" || pathname === "/cronjob" || pathname === "/blog" || pathname.startsWith("/blog/") || pathname.startsWith("/api/");
 
-  // Các route khác cần login
-  const user = getCurrentUser(request);
+  if (isPublic) return NextResponse.next();
+
+  const user = await verifySession(request.cookies.get("token")?.value);
   if (!user) {
-    return NextResponse.redirect(new URL("/login", request.url));
+    const loginUrl = new URL("/login", request.url);
+    loginUrl.searchParams.set("next", `${pathname}${search}`);
+    return NextResponse.redirect(loginUrl);
   }
-  
+
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
+  matcher: ["/((?!_next/|.*\\..*)*)"],
 };
+
+export const runtime = "edge";

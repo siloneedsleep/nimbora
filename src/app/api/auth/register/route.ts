@@ -23,7 +23,7 @@ export async function POST(request: Request) {
       },
     });
 
-    const token = generateToken(user.id, user.username);
+    const token = await generateToken(user.id, user.username);
     const response = NextResponse.json({ success: true, username: user.username });
     response.cookies.set("token", token, {
       httpOnly: true,
